@@ -56,6 +56,38 @@ class Game():
     def easy_mode(self, main):
         f = open('easy_mode.txt', 'r')
         s = f.read()
+        s_const = s
+        start = time.time()
+        while len(s) != 0:
+            main.clear()
+            main.addstr(s_const)
+            main.addstr('\n')
+            s_curr = s[:s.find(' ') + 1]
+            s = s[s.find(' ') + 1:]
+            main.addstr('\n')
+            main.addstr(s)
+            main.addstr('\n')
+            main.addstr(s_curr)
+            main.addstr('\n')
+            temp = 0
+            while temp != len(s_curr):
+                ans = main.getch()
+                if ord(s_curr[temp]) == ans:
+                    main.addstr(s_curr[temp])
+                    temp += 1
+                else:
+                    self.mistakes += 1
+        self.time = time.time() - start
+        main.addstr('\n')
+        main.addstr("Your results:\n")
+        main.addstr("Time: ")
+        main.addstr(str(self.time))
+        main.addstr('\n')
+        main.addstr("Mistakes: ")
+        main.addstr(str(self.mistakes))
+        main.addstr('\n')
+
+
 
 
 
