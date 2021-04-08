@@ -1,0 +1,17 @@
+int main() {
+    Unite* u = new Human;
+    Unite* mg_h = new Mage(u);
+    Unite* u1 = new Human;
+    Unite* wr_h = new Warrior(u1);
+    Unite* u2 = new Elf;
+    Unite* a = new Archer(u2);
+    Composite_Humans* crowd = new Composite_Humans;
+    std::cout << crowd->how_many_humans<<'\n';
+    crowd->ADD(mg_h);
+    crowd->ADD(wr_h);
+    std::cout<<(a->current_hp())<<'\n';
+    crowd->HUMANS_POWER(a);
+    std::cout<<(a->current_hp())<<'\n';
+    crowd->remove(mg_h);
+    std::cout << crowd->how_many_humans;
+}
