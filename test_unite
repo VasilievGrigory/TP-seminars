@@ -1,0 +1,18 @@
+int main() {
+    Unite* u = new Human;
+    Unite* mg_h = new Mage(u);
+    Unite* u1 = new Human;
+    Unite* wr_h = new Warrior(u1);
+    Unite* u2 = new Elf;
+    Unite* a = new Archer(u2);
+    Warrior* copy = dynamic_cast<Warrior*> (wr_h);
+    std::cout << "Enemy_HP: "<<a->current_hp() << '\n';
+    std::cout << "Union act_points: "<<copy->current_act_points() << '\n';
+    copy->strong_hit(a);
+    std::cout << "Enemy_HP: " << a->current_hp() << '\n';
+    std::cout << "Enemy act_points: "<<a->current_act_points() << '\n';
+    std::cout <<"Union act_points: " <<copy->current_act_points() << "\n";
+    copy->hit_with_stun(a);
+    std::cout << "(few act_points)\nEnemy act_points: " << a->current_act_points() << '\n';
+    std::cout << "Enemy_HP: " << a->current_hp() << '\n';
+}
