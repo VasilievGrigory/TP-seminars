@@ -73,20 +73,47 @@ public:
 	    }
     }
 };
- 
+
+template<typename T, typename Allocator = std::allocator<T>>
+class List{
+	struct Node{
+		Node* prev = nullptr;
+		Node* next = nullptr;
+		T val;
+		Node (T value): val(value){}
+		Node() = default;
+	};
+	size_t size = 0;
+	Node* fake_node;
+	Node* head;
+	typename std::allocator_traits<Allocator>::template rebind_alloc<Node> alloc;
+	using AllocTraits = std::allocator_traits<typename std::allocator_traits<Allocator>::template rebind_alloc<Node>>;
+public:
+	explicit List(const Allocator& alloc = Allocator()) : alloc(alloc){}
+	List(size_t count, const T& value = T(), const Allocator& alloc = Allocator()) : alloc(alloc){
+	}
+	void push_back(const T& val){
+		if(size == 0){
+			head = AllocTraits::allocate(alloc, 1);
+			AllocTraits::construct(alloc, head, val);
+			head->prev = fake_node;
+			head->next = fake_node;
+			fake_node->prev = head;
+			fake_node->next = head;
+		}
+		else{
+			Node* new_node = AllocTraits::allocate(alloc, 1);
+			AllocTraits::construct(alloc, new_node, val);
+			fake_node->prev->next = new_node;
+			new_node->prev = fake_node->prev;
+			fake_node->prev = new_node;
+			new_node->next = fake_node;
+		}
+	}
+};
+
+
 int main() {
-    std::list<long long> l1;
-    std::list<long long,FastAllocator<long long>> l2;
-    auto start_time = high_resolution_clock::now();
-    for (int i = 0; i < 1e7; ++i) {
-        l1.push_back(100000000000000);
-    }
-    auto end_time = high_resolution_clock::now();
-    std::cout << duration_cast<milliseconds>(end_time - start_time).count() << "ms" <<'\n';
-    auto start_time1 = high_resolution_clock::now();
-    for (int i = 0; i < 1e7; ++i) {
-        l2.push_back(100000000000000);
-    }
-    auto end_time1 = high_resolution_clock::now();
-    std::cout << duration_cast<milliseconds>(end_time1 - start_time1).count() << "ms" << std::endl;
+	List<int> l;
+	l.push_back(1);
 }
